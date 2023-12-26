@@ -12,7 +12,7 @@
         </div>
 
         <q-input dark dense standout v-model="textSearch" input-class="text-left" placeholder="Buscar"
-          class="q-ml-xl" style="width: 30%;"
+          class="q-mx-xl" style="width: 30%;"
           @blur="textSearch = textSearch.toUpperCase()">
           <template v-slot:prepend>
             <q-icon v-if="textSearch === ''" name="search" />
@@ -20,16 +20,15 @@
           </template>
         </q-input>
 
-        <div class="row q-mr-none">
-          <div>
-            <q-btn flat square icon="videocam" label="Llamada de Teams"/>
-          </div>
-          <div>
-            <q-btn flat square icon="forum" />
-          </div>
-          <div>
-            <q-btn flat square icon="forum" />
-          </div>
+        <div class="q-ml-xl">
+          <q-btn flat square icon="videocam" label="Llamada de Teams"/>
+          <q-btn flat square icon="forum" />
+          <q-btn flat square icon="theaters" />
+          <q-btn flat square icon="event_available" />
+          <q-btn flat square icon="notifications" />
+          <q-btn flat square icon="settings" />
+          <q-btn flat square icon="lightbulb" />
+          
         </div>
 
       </q-toolbar>
@@ -52,9 +51,40 @@
             @click="toggleLeftDrawer"
           />
 
-          <q-toolbar-title>
-            Quasar App
-          </q-toolbar-title>
+          <q-btn-dropdown
+            split
+            color="accent"
+            label="Correo nuevo"
+            @click="newEmail"
+          >
+            <q-list dense>
+              <q-item clickable v-close-popup @click="onItemClick" class="q-my-sm">
+                <q-item-section avatar>
+                  <q-icon name="email" text-color="white" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Correo</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="openWindowEvent" class="q-my-sm">
+                <q-item-section avatar>
+                  <q-icon name="calendar_today" text-color="white" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Evento</q-item-label>
+                </q-item-section> 
+              </q-item>
+              <q-item clickable v-close-popup @click="openWindowExcel" class="q-my-sm">
+                <q-item-section avatar>
+                  <q-icon name="description" text-color="white" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Evento</q-item-label>
+                </q-item-section> 
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
 
           <div>Quasar v{{ $q.version }}</div>
         </q-toolbar>
@@ -132,6 +162,15 @@ export default defineComponent({
     },
     clearSearch () {
       this.textSearch = ''
+    },
+    newEmail () {
+      console.log('nuevo correo')
+    },
+    openWindowEvent () {
+      window.open('https://outlook.live.com/calendar/0/deeplink/compose')
+    },
+    openWindowExcel () {
+      window.open('onedrive.live.com/edit?id=C71EC090F39326A4!4728&resid=C71EC090F39326A4!4728&ithint=file%2cxlsx&wdo=2&cid=c71ec090f39326a4')
     }
   }
 })
