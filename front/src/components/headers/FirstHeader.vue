@@ -107,7 +107,6 @@ export default {
     screenSize: Number 
   },
   mounted () {
-    console.log(this.screenSize)
     this.screen_size = (this.screenSize > 1244 || this.screenSize == null) ? 'pc' : 'smartphone'
   },
   data() {

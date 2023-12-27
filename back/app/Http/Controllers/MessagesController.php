@@ -20,6 +20,11 @@ class MessagesController extends Controller
 
     public function create (Request $request) {
         $data = $request->all();
+        $validate = $request->validate([
+            'para' => ['required', 'email'],
+            'asunto' => ['required', 'max:255'],
+            'contenido' => ['required', 'max:255'],
+        ]);
         $service = $this->service()->create($data);
         return response()->json($service);
     }

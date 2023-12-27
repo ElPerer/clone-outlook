@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     async qTableRequest(props) {
-      this.$loading()
+      //this.$loading()
       this.filter = props.filter
       this.pagination = props.pagination
       this.pagination.sortBy = this.tableProps.sortBy

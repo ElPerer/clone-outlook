@@ -29,7 +29,7 @@
         <q-separator />
         <div class="row q-px-md q-col-gutter-xs">
             <div class="col-sm-12 float-right">
-                <q-input borderless  v-model="text">
+                <q-input borderless  v-model="form.fields.para">
                     <template v-slot:prepend>
                         <q-btn rounded color="accent" label="Para" />
                     </template>
@@ -43,14 +43,14 @@
         <q-separator />
         <div class="row q-px-md q-col-gutter-xs">
             <div class="col-sm-12 float-right">
-                <q-input borderless placeholder="Agregar un asunto" v-model="text" />
+                <q-input borderless placeholder="Agregar un asunto" v-model="form.fields.asunto" />
             </div>
         </div>
         <q-separator />
         <div class="row q-col-gutter-xs">
             <div class="col-xs-12 col-sm-12">
                 <q-input
-                v-model="text"
+                v-model="form.fields.contenido"
                 filled
                 type="textarea"
                 />
@@ -62,27 +62,18 @@
 <script>
 import { api } from 'boot/axios'
 import { defineComponent } from 'vue'
-// import { required, alphaNum, maxLength } from '@vuelidate/validators'
-// import { useVuelidate } from '@vuelidate/core'
 export default defineComponent({
     name: 'NewEmail',
-    /* validations: {
-        form: {
-            fields: {
-                code: { required, alphaNum, maxLength: maxLength(5) },
-                name: { required, maxLength: maxLength(255), }
-            },
-        }
-    }, */
-    // setup: () => ({ v$: useVuelidate() }),
     created () {
         console.log('in nre')
     },
     data: () => ({
+        text: '',
         form: {
             fields: {
-                code: null,
-                name: null
+                para: null,
+                asunto: null,
+                contenido: null,
             }
         },
         actionsBreadCrumbsItems: [
@@ -90,36 +81,13 @@ export default defineComponent({
         ]
 
     }),
-    /* computed: {
-        codeRules() {
-            return [
-                () => !this.v$.form.fields.code.required.$invalid || 'El campo es requerido.',
-                () => !this.v$.form.fields.code.maxLength.$invalid || 'El campo debe tener máximo 5 caracteres.',
-                // () => /^[a-zA-Z0-9]*$/.test(this.v$.form.fields.code) || 'El campo debe ser alfanumérico.'
-
-            ]
-        },
-        nameRules() {
-            return [
-                () => !this.v$.form.fields.name.required.$invalid || 'El campo es requerido.',
-                () => !this.v$.form.fields.name.maxLength.$invalid || 'El campo debe tener máximo 255 caracteres.'
-
-            ]
-        }
-    }, */
     methods: {
         async sendEmail(val) {
             try {
-                this.v$.form.fields.$reset()
-                this.v$.form.fields.$touch()
-                if (this.v$.form.fields.$error) {
-                    this.$notify(this.$messageValidate);
-                    return false
-                }
-                this.$loading('Ingresando categoría')
+                this.$loading('Enviando correo...')
                 const params = { ...this.form.fields }
-                const { data } = await api.post('category', params)
-                this.$notify(data.message)
+                const { data } = await api.post('v1/messages', params)
+                // this.$notify(data.message)
                 this.clearFields()
             } catch (error) {
                 console.error('Error al guardar el registro:', error);
@@ -127,15 +95,9 @@ export default defineComponent({
             this.$q.loading.hide()
         },
         clearFields() {
-            this.form.fields.code = null
-            this.form.fields.name = null
-        },
-        isMobile() {
-            if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                return true
-            } else {
-                return false
-            }
+            this.form.fields.para = null
+            this.form.fields.asunto = null
+            this.form.fields.contenido = null
         }
     }
 });
