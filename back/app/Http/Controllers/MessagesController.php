@@ -7,24 +7,23 @@ use Illuminate\Http\Request;
 use GeneralsQueries\MessagesComposer;
 use ServiceQueries\MessagesService;
 use App\Models\Messages;
-use App\Helpers\HelperNotify;
 
 class MessagesController extends Controller
 {
     public $message = 'El correo';
+    // MÉTODO QUE RETORNA LOS DATOS PROCESADOS
+    // MessagesComposer y MessagesService SON ARCHIVOS QUE HEREDAN DE Service y ComposerQueries
     public function service ($request = null) {
         $message = new Messages();
         $composer = new MessagesComposer($message, 'View1', $this->message, $request);
+        // SE MANDA POR PARÁMETRO EL $composer PARA UTILIZAR LAS QUERIES GENERALES DE ComposerQueries
         $service = new MessagesService($composer);
         return $service;
     }
 
-    public function helper () {
-        return new HelperNotify();
-    }
-
     public function create (Request $request) {
         $data = $request->all();
+        // EL PARÁMETRO $request SE PASA AL MÉTODO service PARA PODER ENVIARSELO A ComposerQueries Y VALIDAR
         $service = $this->service($request)->create($data);
         return response()->json($service);
     }

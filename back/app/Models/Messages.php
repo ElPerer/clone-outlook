@@ -11,12 +11,14 @@ class Messages extends Model
 
     protected $table = 'messages';
 
+    // AQUÍ SE INDICAN QUE CAMPOS SE TOMARÁN EN CUENTA
     protected $fillable = [
         'para',
         'asunto',
         'contenido'
     ];
 
+    // AQUÍ SE DECLARARON LAS REGLAS PARA USARLAS DESPUÉS EN validate EN LARAVEL
     public static $rules = [
         'para' => ['required', 'email'],
         'asunto' => ['required', 'max:255'],

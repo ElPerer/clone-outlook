@@ -73,8 +73,10 @@
           </q-list>
         </q-btn-dropdown>
       </q-tabs>
+      <!-- LA PROPIEDAD SCROLL LLEVA EL CONTROL EN DONDE ESTAMOS POSICIONADOS -->
       <q-scroll-area style="height: 400px; max-width: 500px;" @scroll="onBottom">
         <div v-for="email in rows" :key="email" class="q-py-sm q-px-md">
+        <!-- CARTA Y SU CONTENIDO, ESTA CARTA ES LA QUE MUESTRA LOS MENSAJES EN LA BANDEJA -->
         <q-card class="my-card" flat bordered>
           <q-card-section horizontal>
             <q-item-section avatar class="q-ml-sm">
@@ -92,6 +94,7 @@
             </q-card-section>
 
             <q-card-actions vertical class="justify-around">
+              <!-- BOTONES CON SUS MÉTODOS UTILIZADOS PARA PODER EDITAR Y ELIMINAR UN CORREO -->
               <q-btn flat round color="yellow" icon="edit" @click="updateEmail(email.id)"/>
               <q-btn flat round color="red" icon="delete" @click="deleteEmail(email.id)"/>
             </q-card-actions>
@@ -101,6 +104,7 @@
       </q-scroll-area>
     </div>
     <div class="col-xs-12 col-sm-7">
+      <!-- ESTE ES EL COMPONENTE QUE SE PUEDE APRECIAR AL LADO DERECHO AL MOMENTO DE QUERER EDITAR UN MENSAJE -->
       <ContentEmail :emailId="emailId" :key="cont"/>
     </div>
   </div>
@@ -141,6 +145,7 @@ export default defineComponent({
         this.pagination.page = 1
         this.fetchFromServer(true)
       },
+      // MÉTODO PARA TENER EL CONTROL DEL SCROLL E INDICAR CUANDO HACER LA PETICIÓN SE UTILZA EN q-scroll-area
       onBottom (info) {
         let scrolling = info.verticalContainerSize + info.verticalPosition
         let bottom = info.verticalSize
@@ -155,6 +160,7 @@ export default defineComponent({
         await api.get(this.url, { params }).then(({ data }) => {
           this.$q.loading.hide()
           if(data.data.data.length > 0) {
+            // VALIDACIÓN USADA PARA INDICAR SI LA PETICIÓN ES DESPUÉS DE BORRAR O AL CREARSE EL COMPONENTE
             if (isDelete) {
               this.pagination.page = 0
               this.rows = []

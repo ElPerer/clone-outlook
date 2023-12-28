@@ -3,6 +3,7 @@ namespace ServiceQueries;
 class Service {
     private $composer;
 
+    // SE LE ASIGNA $composer A LA VARIABLE GLOBAL PARA UTIILIZAR AQUÍ MISMO LOS MÉTODOS DEL archivo ComposerQueries
     public function __construct($composer) {
         $this->composer = $composer;
     }

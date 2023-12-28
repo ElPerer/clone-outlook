@@ -1,5 +1,5 @@
 import { Loading, Notify } from 'quasar';
-
+// COMPONENTES DE QUASAR GLOBALES SIN NECESIDAD DE IMPORTARLOS EN CADA COMPONENTE .vue
 export default ({ app }) => {
   app.config.globalProperties.$loading = (message = 'Cargando...') => {
     Loading.show({
@@ -9,17 +9,11 @@ export default ({ app }) => {
       messageColor: 'white'
     });
   };
+  // EN EL NOTIFY SE DESESTRUCTURA LAS OPCIONES QUE RECIBE COMO PARÁMETRO, ESTAS OPCIONES VIENEN DEL BACKEND
   app.config.globalProperties.$notify = (options, actions = null) => {
     Notify.create({
       ...options,
       actions
     });
-  };
-  app.config.globalProperties.$messageValidate = {
-    message: 'Revisa las validaciones',
-    color: 'warning',
-    position: 'top-right',
-    icon: 'warning',
-    timeout: 5000
   };
 };

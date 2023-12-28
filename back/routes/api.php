@@ -14,7 +14,7 @@ use App\Http\Controllers\MessagesController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
+// CONTROLADOR DONDE ESTÁN ALOJADAS TODAS LAS RUTAS Y MÉTODOS PARA ESTE PROYECTO
 Route::controller(MessagesController::class)->group(function () {
     Route::get('/v1/inbox', 'getAll');
     Route::post('/v1/messages', 'create');

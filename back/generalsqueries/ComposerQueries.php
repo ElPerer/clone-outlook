@@ -18,6 +18,9 @@ class ComposerQueries {
         $this->request = $request;
     }
 
+    // ESTE ES EL MÉTODO UTILIZADO PARA VALIDAR CON validate DONDE $this->model EN ESTA OCACIÓN ES EL MODELO
+    // Messages
+    // LO IDEAL ES QUE AQUÍ APUNTEN LOS DEMÁS MODELOS SIN NECESIDAD DE VOLVER A REALIZAR LOS MÉTODOS COMO C.R.U.D
     public function fieldsValidation () {
         try {
             $validate = $this->request->validate($this->model::$rules);
@@ -38,6 +41,7 @@ class ComposerQueries {
         }
     }
 
+    // ARCHIVO UTILIZADO PARA RETORNAR UN MENSAJE AL FRONT Y SE MUESTRE COMO NOTIFICACIÓN 
     public function helper () {
         return new HelperNotify();
     }
@@ -49,6 +53,8 @@ class ComposerQueries {
                 $create = $this->model::create($data);
                 if ($create) {
                     $this->info['result'] = true;
+                    // A CONTINUACIÓN SE LE MANDA SI ES SATISFACTORIA LA RESPUESTA Y EL MENSAJE
+                    // EN EL ARCHIVO HelperNotify SE PUEDE APRECIAR COMO SE PROCESA LO ANTES MENCIONADO
                     $this->info['message'] = $this->helper()->getNotify('success', ucfirst("$this->message ha sido creado."));
                 } else {
                     $this->info['result'] = false;
@@ -56,9 +62,6 @@ class ComposerQueries {
                 }
             }
         } catch (\Exception $e) {
-            // $exception = new Exceptions();
-            // $this->info['result'] = false;
-            // $this->info['message'] = $exception->codeErrors($e);
         }
         return $this->info;
     }
@@ -74,9 +77,6 @@ class ComposerQueries {
                 $this->info['message'] = $this->helper()->getNotify('error', ucfirst("$this->message no se pudo actualizar."));
             }
         } catch (\Exception $e) {
-            // $exception = new Exceptions();
-            // $this->info['result'] = false;
-            // $this->info['message'] = $exception->codeErrors($e);
         }
         return $this->info;
     }
@@ -93,9 +93,6 @@ class ComposerQueries {
                 $this->info['message'] = $this->helper()->getNotify('error', ucfirst("$this->message no se pudo eliminar."));
             }
         } catch (\Exception $e) {
-            // $exception = new Exceptions();
-            // $this->info['result'] = false;
-            // $this->info['message'] = $exception->codeErrors($e);
         }
         return $this->info;
     }
@@ -105,9 +102,8 @@ class ComposerQueries {
         $or = '';
         $and = '';
         $getAll = $this->model::query();
-        if (count($columns)) {
-            $getAll->select($columns);
-        }
+
+        // HandleFiters ES UTILIZADO PARA PROCESAR EL TIPO DE DATO DE LOS FILTROS QUE SE ENVÍAN DESDE EL FRONT
         $handle = new HandleFilters();
         if (isset($filter['conditions'])) {
             foreach ($filter['conditions'] as $key => $value) {
@@ -115,20 +111,6 @@ class ComposerQueries {
             }
             $where .= rtrim($and, ' AND');
         }
-        /* if (isset($filter['filter'])) {
-            foreach ($filter['filter'] as $key => $value) {
-                $or .= $value[0] ." LIKE '%".$value[1]."%' OR ";
-            }
-            $position = strrpos($or,'OR');
-            if ($position !== false) {
-                $or = substr($or, 0, $position - 1);
-            }
-            if ($where !== '') {
-                $where .= " AND ( ".$or." ) ";
-            }else {
-                $where .= " ".$or." ";
-            }
-        } */
         
         if (isset($filter['pagination'])) {
             $sortBy = $filter['pagination']['sortBy'];

@@ -1,5 +1,6 @@
 <template>
     <q-page>
+        <!-- VALIDACIÓN PARA INDICAR SI MOSTRAR EL CONTENIDO DEL MENSAJE O MOSTRAR LA IMAGEN -->
         <div v-if="emailId != null">
             <div class="row q-pa-md q-col-gutter-xs">
                 <div class="col-sm-10">
@@ -58,6 +59,7 @@
                 </div>
             </div>
         </div>
+        <!-- MOSTRAR LA IMAGEN EN DADO CASO QUE NO SE SELCCIONE UN CORREO A EDITAR -->
         <div v-else>
             <q-img class="q-my-md" src="https://d28hi93gr697ol.cloudfront.net/_global/sin-resultados-search.png" />
         </div>
@@ -90,6 +92,7 @@ export default defineComponent({
             this.$loading()
             const params = {}
             if (this.emailId != null) {
+                // LAS CONDITIONS SE MANDAN AL BACK PARA PODER TRAER EL DATO ESPECIFICANDO EL ID 
                 params.conditions = [[
                     'id', '=', this.emailId
                 ]]
@@ -102,10 +105,12 @@ export default defineComponent({
         },
         async updateEmail() {
             try {
+                // LOADING ESTÁ COMO HELPER EN LA CARPETA boot/helpers.js
                 this.$loading('Actualizando correo...')
                 const params = { ...this.form.fields }
                 const { data } = await api.put(`v1/messages/${this.emailId}`, params)
                 console.log(data)
+                // NOTIFY ESTÁ COMO HELPER EN LA CARPETA boot/helpers.js
                 this.$notify(data.message)
             } catch (error) {
                 console.error('Error al guardar el registro:', error);
