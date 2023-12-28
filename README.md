@@ -1,5 +1,6 @@
 # clone-outlook
     Proyecto prueba técnica CIMA GROUP
+
 # Tener instalado Quasar Framework
     Comando para instalar el CLI de Quasar Framework:
     npm i -g @quasar/cli
@@ -10,8 +11,10 @@
     En mi prueba hice las inserciones, actualizaciones lectura y eliminación de registros a la Base de Datos con XAMP
 
 # Instalar el proyecto
-    Ejecutar un git clone en la consola de git para instalar el proyecto: 
-    ~git clone (ruta-repositorio)
+    Ejecutar un git clone en la consola de git para instalar el proyecto:
+
+    Comando a ejecutar:
+    git clone (ruta-repositorio)
 
     En mi caso ejecuté el comando anterior en una carpeta llamada: 
     PuebaTecnica
