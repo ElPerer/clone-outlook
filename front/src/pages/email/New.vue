@@ -75,11 +75,7 @@ export default defineComponent({
                 asunto: null,
                 contenido: null,
             }
-        },
-        actionsBreadCrumbsItems: [
-            { type: 'button', style: 'color: white', icon: 'save', label: 'Guardar', emit: 'saveData', dateEmit: true }
-        ]
-
+        }
     }),
     methods: {
         async sendEmail(val) {
@@ -87,7 +83,8 @@ export default defineComponent({
                 this.$loading('Enviando correo...')
                 const params = { ...this.form.fields }
                 const { data } = await api.post('v1/messages', params)
-                // this.$notify(data.message)
+                console.log(data)
+                this.$notify(data.message)
                 this.clearFields()
             } catch (error) {
                 console.error('Error al guardar el registro:', error);

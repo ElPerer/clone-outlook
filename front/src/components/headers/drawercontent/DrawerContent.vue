@@ -1,4 +1,5 @@
 <template>
+  <!-- LISTA Y CONTENIDO DEL Drawer -->
   <q-list>
     <q-expansion-item
         label="Favoritos"

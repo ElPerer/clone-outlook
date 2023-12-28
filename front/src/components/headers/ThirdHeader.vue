@@ -144,7 +144,9 @@ export default {
     newEmail () {
         this.$router.push('/email/new')
     },
-    openWindowEvent () {},
+    openWindowEvent () {
+        window.open('https://outlook.live.com/calendar/0/deeplink/compose')
+    },
     openWindowExcel () {},
     dropEmail () {},
 

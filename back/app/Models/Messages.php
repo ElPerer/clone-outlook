@@ -16,4 +16,10 @@ class Messages extends Model
         'asunto',
         'contenido'
     ];
+
+    public static $rules = [
+        'para' => ['required', 'email'],
+        'asunto' => ['required', 'max:255'],
+        'contenido' => ['required', 'max:255'],
+    ];
 }

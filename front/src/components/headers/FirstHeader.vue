@@ -7,10 +7,10 @@
     <div class="q-mx-lg">
     Outlook
     </div>
-
+    <!-- screenSize PROPIEDAD RECIBIDA POR PROP UTILIZADA PARA LLEVAR EL CONTROL SOBRE 
+          SI ES VISTA SMARTHPHONE O PC -->
     <q-input dark dense standout v-model="textSearch" input-class="text-left" placeholder="Buscar"
-        class="q-mx-xl" style="width: 30%;"
-        @blur="textSearch = textSearch.toUpperCase()">
+        :class="(screenSize > 600) ? 'q-mx-xl' : ''" style="width: 30%;">
         <template v-slot:prepend>
         <q-icon v-if="textSearch === ''" name="search" />
         <q-icon v-else name="clear" class="cursor-pointer" @click="clearSearch()" />
@@ -19,8 +19,9 @@
 
     <q-toolbar-title>
     </q-toolbar-title>
-
-    <div v-if="screen_size === 'pc'" class="q-ml-xl">
+    <!-- screen_size PROPIEDAD LOCAL UTILIZADA PARA LLEVAR EL CONTROL SOBRE 
+          SI ES VISTA SMARTHPHONE O PC -->
+    <div v-if="screen_size === 'pc'" :class="(screenSize > 600) ? 'q-ml-xl' : ''">
         <q-btn flat square icon="videocam" label="Llamada de Teams" @click="openTeams" />
         <q-btn flat square icon="forum" @click="openSkype" />
         <q-btn flat square icon="theaters" />
@@ -29,6 +30,7 @@
         <q-btn flat square icon="settings" />
         <q-btn flat square icon="lightbulb" />
     </div>
+    <!-- VISTA SMARTPHONE -->
     <div v-else>
       <q-btn-dropdown
             split
@@ -96,17 +98,18 @@
           </q-list>
       </q-btn-dropdown>
     </div>
-
 </template>
 
 <script>
 
 export default {
   name: 'FirstHeader',
+  // SE RECIBE LA CANTIDAD DE PIXELES
   props: {
     screenSize: Number 
   },
   mounted () {
+    // SE PROCESA LA CANTIDAD DE PIXELES Y SE DEFINE QUE TIPO DE PANTALLA QUE SERÁ PC O SMARTPHONE
     this.screen_size = (this.screenSize > 1244 || this.screenSize == null) ? 'pc' : 'smartphone'
   },
   data() {
@@ -117,6 +120,7 @@ export default {
     }
   },
   methods: {
+    // MÉTODOS PARA ABRIR LINKS PROPORCIONADOS POR OUTLOOK
     openTeams () {
       window.open('https://join.skype.com/meetnow?source=outlook.web&exp=SuiteHeader&correlationId=5227d8e1-c93c-fca6-ccad-5376899d0ae3')
     },

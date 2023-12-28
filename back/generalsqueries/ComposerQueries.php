@@ -8,12 +8,34 @@ class ComposerQueries {
     private $view;
     public $info = ['result' => false, 'message' => ['title' => 'Error!', 'content' => 'Internal Server Error.']];
     public $message;
+    public $request;
     
 
-    public function __construct($model, $view, $message) {
+    public function __construct($model, $view, $message, $request) {
         $this->model = $model;
         $this->view = $view;
         $this->message = $message;
+        $this->request = $request;
+    }
+
+    public function fieldsValidation () {
+        try {
+            $validate = $this->request->validate($this->model::$rules);
+            $this->info['result'] = true;
+            return $this->info;
+        } catch (\Illuminate\Validation\ValidationException $validationException) {
+            $errors = $validationException->errors();
+
+            $errors = $validationException->errors();
+            $this->info['result'] = false; 
+            $this->info['message'] = isset($errors['para']) ? $this->helper()->getNotify('exception', $errors['para'][0]) : '';
+            $this->info['message'] = (!isset($errors['para']) && isset($errors['asunto'])) ? $this->helper()->getNotify('exception', $errors['asunto'][0]) : $this->helper()->getNotify('exception', isset($errors['para']) ? $errors['para'][0] : '') ;
+            if (!isset($errors['asunto']) && !isset($errors['para'])) {
+                $this->info['message'] = $this->helper()->getNotify('exception', $errors['contenido'][0]);
+            }
+    
+            return $this->info;
+        }
     }
 
     public function helper () {
@@ -22,13 +44,16 @@ class ComposerQueries {
 
     public function create ($data) {
         try {
-            $create = $this->model::create($data);
-            if ($create) {
-                $this->info['result'] = true;
-                $this->info['message'] = $this->helper()->getNotify('success', ucfirst("$this->message ha sido creado."));
-            } else {
-                $this->info['result'] = false;
-                $this->info['message'] = $this->helper()->getNotify('error', ucfirst("$this->message no se pudo crear."));
+            $validation = $this->fieldsValidation();
+            if ($validation['result']) {
+                $create = $this->model::create($data);
+                if ($create) {
+                    $this->info['result'] = true;
+                    $this->info['message'] = $this->helper()->getNotify('success', ucfirst("$this->message ha sido creado."));
+                } else {
+                    $this->info['result'] = false;
+                    $this->info['message'] = $this->helper()->getNotify('error', ucfirst("$this->message no se pudo crear."));
+                }
             }
         } catch (\Exception $e) {
             // $exception = new Exceptions();
@@ -90,7 +115,7 @@ class ComposerQueries {
             }
             $where .= rtrim($and, ' AND');
         }
-        if (isset($filter['filter'])) {
+        /* if (isset($filter['filter'])) {
             foreach ($filter['filter'] as $key => $value) {
                 $or .= $value[0] ." LIKE '%".$value[1]."%' OR ";
             }
@@ -103,7 +128,7 @@ class ComposerQueries {
             }else {
                 $where .= " ".$or." ";
             }
-        }
+        } */
         
         if (isset($filter['pagination'])) {
             $sortBy = $filter['pagination']['sortBy'];
